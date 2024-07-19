@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.photography_api.mapper.HomeMapper">
+
+
+<!--    //    根据作品id获取详细信息
+    Work getWorkDetailByWorkId(Integer workId);-->
+    <resultMap id="getWorkDetailByWorkIdMap" type="Work">
+        <id property="workId" column="work_id"></id>
+        <result property="classificationId" column="classification_id"></result>
+        <result property="workName" column="work_name"></result>
+        <result property="workImg" column="work_img"></result>
+        <result property="createTime" column="create_time"></result>
+        <collection property="workImgList" ofType="WorkImg">
+            <id property="workImgId" column="work_img_id"></id>
+            <result property="workId" column="work_id"></result>
+            <result property="workImgPath" column="work_img_path"></result>
+        </collection>
+    </resultMap>
+    <select id="getWorkDetailByWorkId" resultMap="getWorkDetailByWorkIdMap">
+        SELECT * FROM work w
+        LEFT JOIN work_img wi ON w.work_id = wi.work_id
+        WHERE w.work_id = #{workId}
+    </select>
+
+</mapper>

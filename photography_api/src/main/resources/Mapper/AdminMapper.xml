@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.photography_api.mapper.AdminMapper">
+
+<!--    //    获取作品列表
+    List<Work> getWorkList();-->
+    <resultMap id="getWorkListMap" type="Work">
+        <id property="workId" column="work_id"></id>
+        <result property="classificationId" column="classification_id"></result>
+        <result property="workName" column="work_name"></result>
+        <result property="workImg" column="work_img"></result>
+        <result property="createTime" column="create_time"></result>
+        <collection property="workImgList" ofType="WorkImg">
+            <id property="workImgId" column="work_img_id"></id>
+            <result property="workId" column="work_id"></result>
+            <result property="workImgPath" column="work_img_path"></result>
+        </collection>
+        <collection property="classification" ofType="Classification">
+            <id property="classificationId" column="classification_id"></id>
+            <result property="classificationName" column="classification_name"></result>
+        </collection>
+    </resultMap>
+    <select id="getWorkList" resultMap="getWorkListMap">
+        SELECT * FROM work w
+        LEFT JOIN work_img wi ON wi.work_id = w.work_id
+        LEFT JOIN classification c on c.classification_id = w.classification_id
+        ORDER BY create_time DESC
+    </select>
+
+
+</mapper>
